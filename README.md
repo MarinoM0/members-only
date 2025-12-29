@@ -1,5 +1,6 @@
 ## Overview
 A message board where users can sign up, log in, and post messages. Membership status controls access to certain features, and admins can delete messages.
+**Note:** This project is still in progress.
 
 ## Features
 - User authentication with **Passport.js** and hashed passwords using **bcrypt**.  
