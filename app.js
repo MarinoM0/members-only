@@ -12,11 +12,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/', authRoutes);
-
 app.get('/', (req, res) => {
     res.send('Members Only App');
 });
+
+app.use('/', authRoutes);
 
 const PORT = process.env.PORT || 5432;
 app.listen(PORT, () => {
