@@ -31,7 +31,27 @@ const postSignup = async (req, res) => {
   }
 };
 
+const getJoinClub = (req,res) => {
+  res.render('join');
+};
+
+const postJoinClub = async (req,res) => {
+
+  const passcode = req.body.passcode;
+
+  if(passcode !== process.env.MEMBER_PASSCODE) {
+    return res.status(400).send('Wrong passcode');
+  }
+
+  const userId = 1;
+
+  await User.setMemberStatus(userId,true);
+  res.send('YOu are now a member!');
+};
+
 module.exports = {
     getSignup,
     postSignup,
+    getJoinClub,
+    postJoinClub,
 }

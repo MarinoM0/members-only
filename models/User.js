@@ -11,7 +11,14 @@ async function createUser(firstName, lastName, username, passwordHash) {
         [firstName, lastName, username, passwordHash]);
 }
 
+async function setMemberStatus(userId, isMember) {
+    await pool.query(`UPDATE users SET is_member=$1 WHERE id=$2`, [isMember, userId]);
+}
+
+
+
 module.exports = {
     findByUsername,
     createUser,
+    setMemberStatus,
 };
