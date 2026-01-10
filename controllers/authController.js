@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt')
 const { validationResult } = require('express-validator');
+const passport = require('passport');
 
 const getSignup = (req,res) => {
     res.render('signup');
@@ -43,10 +44,32 @@ const postJoinClub = async (req,res) => {
     return res.status(400).send('Wrong passcode');
   }
 
-  const userId = 1;
+  await User.setMemberStatus(req.user.id, true);
 
-  await User.setMemberStatus(userId,true);
   res.send('YOu are now a member!');
+};
+
+const getLogin = (req, res) => {
+  res.render('login');
+};
+
+const postLogin = (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(400).send(info?.message || 'Invalid credentials');
+
+    req.logIn(user, (err2) => {
+      if (err2) return next(err2);
+      return res.redirect('/');
+    });
+  })(req, res, next);
+};
+
+const postLogout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect('/');
+  });
 };
 
 module.exports = {
@@ -54,4 +77,7 @@ module.exports = {
     postSignup,
     getJoinClub,
     postJoinClub,
+    getLogin,
+    postLogin,
+    postLogout,
 }
