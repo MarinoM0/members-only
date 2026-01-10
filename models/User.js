@@ -15,10 +15,14 @@ async function setMemberStatus(userId, isMember) {
     await pool.query(`UPDATE users SET is_member=$1 WHERE id=$2`, [isMember, userId]);
 }
 
-
+async function findById(id) {
+    const result = await pool.query(`SELECT * FROM users WHERE id=$1`, [id]);
+    return result.rows[0];
+}
 
 module.exports = {
     findByUsername,
     createUser,
     setMemberStatus,
+    findById,
 };
